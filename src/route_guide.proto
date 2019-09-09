@@ -1,0 +1,22 @@
+service RouteGuide {
+
+    // simple RPC.
+    // 普通の関数呼び出しと同じように、クライアントがスタブを使用してサーバにリクエストを送信し、応答が帰ってくるのを待つ。
+    rpc GetFeature(Point) returns (Feature){}
+
+    // server-side streaming RPC.
+    // クライアントからの単一メッセージに対して、サーバからストリームで複数のメッセージを返す。
+    // returns に stream キーワードをつけることで実現することができる。
+    rpc ListFeatures(Rectangle) returns (stream Feature) {}
+
+    // client-side streaming RPC.
+    // クライアントからストリームで複数メッセージを送信し、サーバから単一メッセージを返す。
+    // request-type の前に stream キーワードをつけることで実現することができる。
+    rpc RecordRoute(stream Point) returns (RouteSummary) {}
+
+    // bidirectional streaming RPC.
+    // クライアントからストリームで複数メッセージを送信し、サーバからストリームで複数のメッセージを返す。
+    // 2つのストリームは独立しているため、クライアントとサーバは好きな順序で読み書きできる。
+    // 書くストリームのメッセージの順序は保持される。
+    rpc RouteChat(stream RouteNote) returns (stream RouteNote) {}
+}
