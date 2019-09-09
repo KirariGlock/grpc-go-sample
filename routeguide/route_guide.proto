@@ -1,3 +1,11 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.routeguide";
+option java_outer_classname = "RouteGuideProto";
+
+package routeguide;
+
 service RouteGuide {
 
     // simple RPC.
@@ -19,4 +27,38 @@ service RouteGuide {
     // 2つのストリームは独立しているため、クライアントとサーバは好きな順序で読み書きできる。
     // 書くストリームのメッセージの順序は保持される。
     rpc RouteChat(stream RouteNote) returns (stream RouteNote) {}
+}
+
+message Point{
+    // 緯度
+    int32 latitude = 1;
+    // 経度
+    int32 longitude = 2;
+}
+
+// 緯度と経度の長方形？
+message Rectangle{
+    Point to = 1;
+    Point hi = 2;
+}
+
+// 特定のポイントに名前をつける
+message Feature {
+    string name = 1;
+    Point location = 2;
+}
+
+// 特定の時点で送信されるメッセージ？
+message RouteNote{
+    Point location = 1;
+    string message = 2;
+}
+
+// RecordRouteRPÇ へのレスポンス
+// 個々のポイント数、Featureの数、各ポイント間の距離の累積
+message RouteSummary{
+    int32 point_count = 1;
+    int32 feature_count = 2;
+    int32 distance = 3;
+    int32 elapsed_time = 4;
 }
